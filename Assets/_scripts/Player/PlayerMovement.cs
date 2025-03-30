@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Collider2D _bodyColl;
 
     private Rigidbody2D _rb;
-
+    private Animator _animator; // Add this variable to reference the Animator
 
     //Variables de movimiento
     public float HorizontalVelocity { get; private set; }
@@ -86,6 +86,7 @@ public class PlayerMovement : MonoBehaviour
         _isFacingRight = true;
 
         _rb = GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>(); // Reference the Animator component
     }
 
     void Update()
@@ -96,6 +97,19 @@ public class PlayerMovement : MonoBehaviour
         WallSlideCheck();
         WallJumpCheck();
         DashCheck();
+
+        // Check if the move input is pressed
+        if (Mathf.Abs(InputManager.Movement.x) > 0.1f && _isGrounded)
+        {
+            _animator.SetBool("IsRunning", true); 
+        }
+        else
+        {
+            _animator.SetBool("IsRunning", false); 
+        }
+
+        _animator.SetBool("IsJumping", _isJumping || _isWallJumping); 
+        _animator.SetBool("IsFalling", _isFalling || _isFastFalling || _isWallJumpFalling || _isWallJumpFastFalling || _isDashFastFalling || _isWallSlideFalling); 
     }
 
     void FixedUpdate()
