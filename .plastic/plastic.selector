@@ -1,4 +1,3 @@
 repository "Final Proyect/Final Proyect@4674059245581@cloud"
   path "/"
-    br "/main"
-    co "/main"
+    smartbranch "/main/Jorge"
